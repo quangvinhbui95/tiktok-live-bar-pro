@@ -48,7 +48,7 @@
             let username = document.getElementById('username-input').value.trim().replace(/^@/, '');
             if (username) {
                 socket.emit('set-username', username);
-                document.getElementById('status-textinnerText = `Đang kết nối tới @${username}...`;
+                document.getElementById('status-text').innerText = `Đang kết nối tới @${username}...`;
             } else {
                 alert('Vui lòng nhập ID TikTok!');
             }
