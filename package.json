@@ -1,7 +1,7 @@
 {
-  "name": "tiktok-live-bar",
-  "version": "1.0.0",
-  "description": "Tool Live TikTok Studio Bar",
+  "name": "tiktok-live-bar-pro",
+  "version": "2.0.0",
+  "description": "Tool Live TikTok Studio Bar Pro",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
@@ -9,6 +9,7 @@
   "dependencies": {
     "express": "^4.19.2",
     "socket.io": "^4.7.5",
-    "tiktok-live-connector": "*"
+    "tiktok-live-connector": "*",
+    "tiktok-live-proto": "*"
   }
 }
