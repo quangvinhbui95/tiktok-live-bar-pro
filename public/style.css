@@ -1,0 +1,95 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+body { background: #0f0f13; color: #fff; height: 100vh; overflow: hidden; display: flex; }
+
+/* Bảng điều khiển bên trái */
+#control-dashboard {
+    width: 320px;
+    background: #181820;
+    border-right: 2px solid #2a2a38;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 10;
+}
+#control-dashboard h2 { font-size: 18px; color: #fe2c55; text-align: center; }
+.control-group { display: flex; flex-direction: column; gap: 8px; }
+#control-dashboard input { padding: 8px; border-radius: 6px; border: 1px solid #444; background: #222; color: #fff; }
+#connect-btn { padding: 10px; background: #fe2c55; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+.action-btn { padding: 8px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+.action-btn:hover { background: #2563eb; }
+#status-text { font-size: 13px; color: #aaa; text-align: center; margin-top: 10px; }
+
+/* Khu vực sân khấu mô phỏng quán bar bên phải */
+#stage-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    background: radial-gradient(circle, #2b1055 0%, #7597de 100%);
+}
+
+.vip-stage {
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid gold;
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    width: 90%;
+    margin-bottom: 15px;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+.vip-stage h3 { font-size: 14px; color: gold; margin-bottom: 8px; }
+.vip-guest {
+    display: inline-block;
+    background: linear-gradient(45deg, #f59e0b, #d97706);
+    color: black;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin: 4px;
+    font-weight: bold;
+    font-size: 13px;
+    animation: bounce 0.8s infinite alternate;
+}
+
+.dance-floor {
+    background: rgba(15, 15, 20, 0.85);
+    border: 2px solid #fe2c55;
+    border-radius: 16px;
+    width: 90%;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(254, 44, 85, 0.4);
+}
+.dj-booth { font-size: 16px; font-weight: bold; color: #00f2fe; margin-bottom: 12px; }
+#alert-box {
+    background: rgba(254, 44, 85, 0.9);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-bottom: 18px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+#character-grid { display: flex; justify-content: space-around; }
+.dancer {
+    background: #27273a;
+    border: 1px solid #555;
+    padding: 12px 20px;
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: bold;
+    animation: danceMove 0.7s infinite alternate ease-in-out;
+}
+
+@keyframes danceMove {
+    0% { transform: translateY(0) rotate(-4deg); }
+    100% { transform: translateY(-12px) rotate(4deg); }
+}
+@keyframes bounce {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.08); }
+}

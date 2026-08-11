@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Live Bar Pro Studio</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <!-- BẢNG ĐIỀU KHIỂN (CONTROL PANEL) -->
+    <div id="control-dashboard">
+        <h2>🎛️ BarPro Control Panel</h2>
+        <div class="control-group">
+            <input type="text" id="username-input" placeholder="Nhập TikTok ID...">
+            <button id="connect-btn">Kết Nối Live</button>
+        </div>
+        <div class="control-group">
+            <button class="action-btn" onclick="sendManual('VIP', 'Thêm khách VIP thủ công')">👑 Thêm VIP</button>
+            <button class="action-btn" onclick="sendManual('FIREWORK', 'Đốt pháo hoa tổng lực!')">🎆 Pháo Hoa</button>
+            <button class="action-btn" onclick="sendManual('DANCE', 'Dancer đổi bài nhảy!')">💃 Đổi Điệu Nhảy</button>
+        </div>
+        <div id="status-text">Trạng thái: Chưa kết nối</div>
+    </div>
+
+    <!-- KHUNG HIỂN THỊ SÂN KHẤU (Dùng làm Browser Source) -->
+    <div id="stage-container">
+        <div class="vip-stage">
+            <h3>🔥 VIP STAGE & TƯƠNG TÁC CAO 🔥</h3>
+            <div id="vip-characters"></div>
+        </div>
+
+        <div class="dance-floor">
+            <div class="dj-booth">🎧 DJ Đang Chơi Nhạc Remix Top 1</div>
+            <div id="alert-box">Chờ tương tác từ phòng Live...</div>
+            <div id="character-grid">
+                <div class="dancer">🕺 Dancer Ryan</div>
+                <div class="dancer">💃 Dancer Luna</div>
+                <div class="dancer">🕺 Dancer Ken</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+
+        document.getElementById('connect-btn').addEventListener('click', () => {
+            let username = document.getElementById('username-input').value.trim().replace(/^@/, '');
+            if (username) {
+                socket.emit('set-username', username);
+                document.getElementById('status-textinnerText = `Đang kết nối tới @${username}...`;
+            } else {
+                alert('Vui lòng nhập ID TikTok!');
+            }
+        });
+
+        function sendManual(type, text) {
+            socket.emit('trigger-action', { type, text, user: 'Admin Panel' });
+        }
+
+        const alertBox = document.getElementById('alert-box');
+        const vipContainer = document.getElementById('vip-characters');
+        const statusText = document.getElementById('status-text');
+
+        socket.on('connection-status', (data) => {
+            statusText.innerText = data.message;
+            statusText.style.color = data.status === 'success' ? '#00ffcc' : '#ff4444';
+        });
+
+        socket.on('tiktok-chat', (data) => {
+            if(data.comment.toLowerCase().includes('vào bar')) {
+                showNotification(`✨ <b>${data.user}</b> vừa bước vào Quán Bar!`);
+            }
+        });
+
+        socket.on('tiktok-gift', (data) => {
+            showNotification(`🎁 <b>${data.user}</b> tặng <b>${data.giftName}</b> (${data.diamondCount} xu)!`);
+            if (data.diamondCount >= 50) {
+                addVipGuest(data.user, data.giftName);
+            }
+        });
+
+        socket.on('tiktok-follow', (data) => {
+            showNotification(`❤️ <b>${data.user}</b> vừa Follow kênh!`);
+        });
+
+        socket.on('manual-trigger', (data) => {
+            showNotification(`⚡ [${data.type}] <b>${data.user}</b>: ${data.text}`);
+            if(data.type === 'VIP') addVipGuest('Khách VIP', 'Đặc quyền');
+        });
+
+        function showNotification(htmlText) {
+            alertBox.innerHTML = htmlText;
+            alertBox.classList.add('highlight');
+            setTimeout(() => alertBox.classList.remove('highlight'), 2000);
+        }
+
+        function addVipGuest(user, detail) {
+            const vipItem = document.createElement('div');
+            vipItem.className = 'vip-guest';
+            vipItem.innerText = `⭐ ${user} (${detail})`;
+            vipContainer.appendChild(vipItem);
+            setTimeout(() => vipItem.remove(), 20000);
+        }
+    </script>
+</body>
+</html>
